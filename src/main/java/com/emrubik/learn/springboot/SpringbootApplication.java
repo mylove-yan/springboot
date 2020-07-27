@@ -7,7 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @EnableCaching // 开启缓存注解
 //可以在配置类里面使用 EnableConfigurationProperties  也可以  @Configuration

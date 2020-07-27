@@ -10,6 +10,7 @@ package com.emrubik.springboot.shiro.config;
 import com.emrubik.springboot.shiro.shiro.CustomRealm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.mgt.DefaultFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;

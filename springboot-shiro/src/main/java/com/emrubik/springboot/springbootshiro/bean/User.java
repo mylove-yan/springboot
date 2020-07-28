@@ -6,6 +6,9 @@
  *******************************************************************************/
 package com.emrubik.springboot.springbootshiro.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Set;
@@ -17,13 +20,15 @@ import java.util.Set;
  * @version $$Revision 1.5 $$ 2020/7/20 8:51
  */
 @Data
+@TableName("user_t")
 public class User {
-
+    @TableId(value = "id", type = IdType.AUTO)
     private String id;
     private String userName;
     private String password;
-    private Set<Role> roles;
     private String salt;
+    private Set<Role> roles;
+
 
     public User() {
     }

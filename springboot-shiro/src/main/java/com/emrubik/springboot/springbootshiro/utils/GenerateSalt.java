@@ -33,7 +33,8 @@ public class GenerateSalt {
     }
 
     public static void main(String[] args) {
-        User user = new User("zhangsan","123456");
+        User user = new User("liuyan","1234@com");
+        System.out.println(GenerateSalt.salt);
         System.out.println(generate(user));
     }
 

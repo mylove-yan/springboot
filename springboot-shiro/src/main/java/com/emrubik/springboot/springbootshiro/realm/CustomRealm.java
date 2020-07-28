@@ -6,10 +6,14 @@
  *******************************************************************************/
 package com.emrubik.springboot.springbootshiro.realm;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.emrubik.springboot.springbootshiro.bean.Permission;
 import com.emrubik.springboot.springbootshiro.bean.Role;
 import com.emrubik.springboot.springbootshiro.bean.User;
-import com.emrubik.springboot.springbootshiro.service.LoginServiceImpl;
+import com.emrubik.springboot.springbootshiro.mapper.RoleMapper;
+import com.emrubik.springboot.springbootshiro.mapper.UserMapper;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -21,6 +25,10 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * 自定义realm
  *
@@ -31,26 +39,56 @@ public class CustomRealm extends AuthorizingRealm {
 
 
     @Autowired
-    private LoginServiceImpl loginService;
+    private UserMapper userMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //获取登录用户名
-        String name = (String) principalCollection.getPrimaryPrincipal();
-        //根据用户名去数据库查询用户信息
-        User user = loginService.getUserByName(name);
-        //添加角色和权限
+        String username = (String) principalCollection.getPrimaryPrincipal();
+        // 从数据库或者缓存中获得角色数据
+        Set<String> roles = getRolesByUserName(username);
+        Set<String> permissions = getPermissionsByUserName(username);
+
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        for (Role role : user.getRoles()) {
-            //添加角色
-            simpleAuthorizationInfo.addRole(role.getRoleName());
-            //添加权限
-            for (Permission permissions : role.getPermissions()) {
-                simpleAuthorizationInfo.addStringPermission(permissions.getPermissionsName());
-            }
-        }
+        simpleAuthorizationInfo.setStringPermissions(permissions);
+        simpleAuthorizationInfo.setRoles(roles);
+
         return simpleAuthorizationInfo;
     }
+
+    /**
+     * 根据用户名获取权限
+     * @param username
+     * @return
+     */
+    private Set<String> getPermissionsByUserName(String username) {
+        Set<String> sets = new HashSet<>();
+        sets.add("user:delete");
+        sets.add("user:add");
+        return sets;
+    }
+
+    /**
+     * 根据用户名获取角色
+     * @param username
+     * @return
+     */
+    private Set<String> getRolesByUserName(String username) {
+        System.out.println("从数据库中获取数据");
+        QueryWrapper<Role> queryWrapper = new QueryWrapper<Role>();
+        queryWrapper.eq("name",username);
+        List<Role> userList = roleMapper.selectList(queryWrapper);
+        Set<String> sets = new HashSet<String>();
+        for(Role r:userList){
+            sets.add(r.getRoleName());
+        }
+        return sets;
+    }
+
+
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
@@ -60,7 +98,10 @@ public class CustomRealm extends AuthorizingRealm {
         }
         //获取用户信息
         String name = authenticationToken.getPrincipal().toString();
-        User user = loginService.getUserByName(name);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+        queryWrapper.eq("name",name);
+        List<User> userList = userMapper.selectList(queryWrapper);
+        User user = CollectionUtils.isEmpty(userList) ? null : userList.get(0);
         if (user == null) {
             //这里返回后会报出对应异常
             return null;

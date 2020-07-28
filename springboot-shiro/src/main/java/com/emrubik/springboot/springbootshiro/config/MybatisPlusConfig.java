@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  * @version $$Revision 1.5 $$ 2020/7/28 19:34
  */
 @Configuration
-@MapperScan("com.basic.study.mybatisplus.mapper")
+@MapperScan("com.emrubik.springboot.springbootshiro.mapper")
 public class MybatisPlusConfig {
     @Bean
     public PaginationInterceptor paginationInterceptor() {

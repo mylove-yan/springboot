@@ -9,6 +9,7 @@ package com.emrubik.springboot.springbootshiro.utils;
 import com.emrubik.springboot.springbootshiro.bean.User;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 
 /**
  * 产生salt
@@ -18,7 +19,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
  */
 public class GenerateSalt {
 
-    private final static String algorithmName = "md5";
+    private final static String algorithmName = "MD5";
     private final static String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
     private final static int hashIterations = 2;
 
@@ -28,13 +29,13 @@ public class GenerateSalt {
      * @return
      */
     public static String generate(User user){
-        SimpleHash hash = new SimpleHash(algorithmName, user.getPassword(), user.getUserName()+salt, hashIterations);
+
+        SimpleHash hash = new SimpleHash(algorithmName, user.getPassword(), ByteSource.Util.bytes(user.getUserName()), hashIterations);
         return hash.toHex();
     }
 
     public static void main(String[] args) {
-        User user = new User("liuyan","1234@com");
-        System.out.println(GenerateSalt.salt);
+        User user = new User("mazhihao","1234@com");
         System.out.println(generate(user));
     }
 

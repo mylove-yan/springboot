@@ -27,21 +27,19 @@ public class User {
     private String userName;
     private String password;
     private String salt;
-    private Set<Role> roles;
 
 
     public User() {
     }
 
-    public User(String id, String userName, String password, Set<Role> roles) {
+    public User(String id, String userName, String passWord) {
         this.id = id;
         this.userName = userName;
-        this.password = password;
-        this.roles = roles;
+        this.password = passWord;
     }
 
-    public User(String userName, String password){
+    public User(String userName, String passWord){
         this.userName = userName;
-        this.password = password;
+        this.password = passWord;
     }
 }

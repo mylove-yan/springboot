@@ -99,7 +99,7 @@ public class CustomRealm extends AuthorizingRealm {
         //获取用户信息
         String name = authenticationToken.getPrincipal().toString();
         QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
-        queryWrapper.eq("name",name);
+        queryWrapper.eq("user_name",name);
         List<User> userList = userMapper.selectList(queryWrapper);
         User user = CollectionUtils.isEmpty(userList) ? null : userList.get(0);
         if (user == null) {
@@ -107,8 +107,8 @@ public class CustomRealm extends AuthorizingRealm {
             return null;
         } else {
             //这里验证authenticationToken和simpleAuthenticationInfo的信息
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name, user.getPassword().toString(), getName());
-            simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(user.getUserName()+user.getSalt()));
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name, user.getPassword(), getName());
+            simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(user.getUserName()));
             return simpleAuthenticationInfo;
         }
     }

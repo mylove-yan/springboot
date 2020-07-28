@@ -20,14 +20,13 @@ import java.util.Set;
 public class Role {
     private String id;
     private String roleName;
-    private Set<Permission> permissions;
 
     public Role() {
     }
 
-    public Role(String id, String roleName, Set<Permission> permissions) {
+    public Role(String id, String roleName) {
         this.id = id;
         this.roleName = roleName;
-        this.permissions = permissions;
+
     }
 }

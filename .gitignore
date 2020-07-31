@@ -1,6 +1,6 @@
 /logs/
-/.idea/
 /.settings/
 *.iml
 */target/
 /target/
+/.idea/

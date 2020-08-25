@@ -8,6 +8,7 @@ package com.emrubik.springboot.springbootshiro.bean;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -17,14 +18,14 @@ import java.util.Set;
  * @version $$Revision 1.5 $$ 2020/7/20 8:52
  */
 @Data
-public class Role {
-    private String id;
+public class Role implements Serializable {
+    private Integer id;
     private String roleName;
 
     public Role() {
     }
 
-    public Role(String id, String roleName) {
+    public Role(Integer id, String roleName) {
         this.id = id;
         this.roleName = roleName;
 

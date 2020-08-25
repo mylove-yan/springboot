@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emrubik.springboot.springbootshiro.mapper.RoleMapper">
+
+    <select id="queryByUserId" resultType="com.emrubik.springboot.springbootshiro.bean.Role">
+        SELECT
+            role_t.*
+        FROM
+            user_t
+            JOIN user_role_t rel ON rel.user_id = user_t."id"
+            JOIN role_t ON role_t."id" = rel.role_id
+        WHERE
+            user_id = #{userId}
+    </select>
+
+</mapper>

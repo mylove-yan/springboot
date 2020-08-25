@@ -9,7 +9,10 @@ package com.emrubik.springboot.springbootshiro.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.emrubik.springboot.springbootshiro.bean.Role;
 import com.emrubik.springboot.springbootshiro.bean.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 角色Mapper
@@ -19,4 +22,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface RoleMapper extends BaseMapper<Role> {
+
+    public List<Role> queryByUserId(@Param("userId") Integer userId);
+
 }

@@ -8,6 +8,8 @@ package com.emrubik.springboot.springbootshiro.bean;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 权限
  *
@@ -15,14 +17,14 @@ import lombok.Data;
  * @version $$Revision 1.5 $$ 2020/7/20 8:53
  */
 @Data
-public class Permission {
-    private String id;
+public class Permission  implements Serializable {
+    private Integer id;
     private String permissionsName;
 
     public Permission() {
     }
 
-    public Permission(String id, String permissionsName) {
+    public Permission(Integer id, String permissionsName) {
         this.id = id;
         this.permissionsName = permissionsName;
     }

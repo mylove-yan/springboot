@@ -52,10 +52,11 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency><!--页面模板依赖-->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
+
 
         <!--  druid数据连接池      -->
         <dependency>
@@ -81,7 +82,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.1.2</version>
+            <version>3.3.2</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -115,6 +116,14 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
 </project>

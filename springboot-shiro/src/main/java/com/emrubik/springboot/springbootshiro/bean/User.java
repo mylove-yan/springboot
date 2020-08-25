@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -21,9 +22,9 @@ import java.util.Set;
  */
 @Data
 @TableName("user_t")
-public class User {
+public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
     private String userName;
     private String password;
     private String salt;
@@ -32,7 +33,7 @@ public class User {
     public User() {
     }
 
-    public User(String id, String userName, String passWord) {
+    public User(Integer id, String userName, String passWord) {
         this.id = id;
         this.userName = userName;
         this.password = passWord;

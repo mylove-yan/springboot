@@ -47,10 +47,10 @@ public class CustomRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //获取登录用户名
-        String username = (String) principalCollection.getPrimaryPrincipal();
+        User user = (User) principalCollection.getPrimaryPrincipal();
         // 从数据库或者缓存中获得角色数据
-        Set<String> roles = getRolesByUserName(username);
-        Set<String> permissions = getPermissionsByUserName(username);
+        Set<String> roles = getRolesByUserName(user);
+        Set<String> permissions = getPermissionsByUserName(user);
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.setStringPermissions(permissions);
@@ -61,10 +61,10 @@ public class CustomRealm extends AuthorizingRealm {
 
     /**
      * 根据用户名获取权限
-     * @param username
+     * @param user
      * @return
      */
-    private Set<String> getPermissionsByUserName(String username) {
+    private Set<String> getPermissionsByUserName(User user) {
         Set<String> sets = new HashSet<>();
         sets.add("user:delete");
         sets.add("user:add");
@@ -73,16 +73,15 @@ public class CustomRealm extends AuthorizingRealm {
 
     /**
      * 根据用户名获取角色
-     * @param username
+     * @param user
      * @return
      */
-    private Set<String> getRolesByUserName(String username) {
+    private Set<String> getRolesByUserName(User user) {
         System.out.println("从数据库中获取数据");
-        QueryWrapper<Role> queryWrapper = new QueryWrapper<Role>();
-        queryWrapper.eq("name",username);
-        List<Role> userList = roleMapper.selectList(queryWrapper);
+
+        List<Role> roleList = roleMapper.queryByUserId(user.getId());
         Set<String> sets = new HashSet<String>();
-        for(Role r:userList){
+        for(Role r:roleList){
             sets.add(r.getRoleName());
         }
         return sets;
@@ -107,7 +106,7 @@ public class CustomRealm extends AuthorizingRealm {
             return null;
         } else {
             //这里验证authenticationToken和simpleAuthenticationInfo的信息
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name, user.getPassword(), getName());
+            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
             simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(user.getUserName()));
             return simpleAuthenticationInfo;
         }

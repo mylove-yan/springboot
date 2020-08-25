@@ -7,6 +7,7 @@
 package com.emrubik.learn.springboot.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -23,31 +24,39 @@ import redis.clients.jedis.JedisPoolConfig;
 @PropertySource("classpath:redis.properties")
 public class RedisConfig {
 
-    @Value("${redis.host}")
+    @Value("${spring.redis.host}")
     private String host;
 
-    @Value("${redis.port}")
+    @Value("${spring.redis.port}")
     private int port;
 
-    @Value("${redis.timeout}")
+    @Value("${spring.redis.timeout}")
     private int timeout;
 
-    @Value("${redis.maxIdle}")
+    @Value("${spring.redis.jedis.pool.max-active}")
+    private int maxTotal;
+
+    @Value("${spring.redis.jedis.pool.max-idle}")
     private int maxIdle;
 
-    @Value("${redis.maxWaitMillis}")
+    @Value("${spring.redis.jedis.pool.min-idle}")
+    private int minIdle;
+
+    @Value("${spring.redis.jedis.pool.max-wait}")
     private int maxWaitMillis;
 
-    @Value("${redis.blockWhenExhausted}")
+    @Value("${spring.redis.block-when-exhausted}")
     private Boolean blockWhenExhausted;
 
-    @Value("${redis.JmxEnabled}")
+    @Value("${spring.redis.jmx-enabled}")
     private Boolean JmxEnabled;
 
     @Bean
     public JedisPool jedisPoolFactory() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(maxTotal);
         jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMinIdle(minIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
         // 连接耗尽时是否阻塞, false报异常,true阻塞直到超时, 默认true
         jedisPoolConfig.setBlockWhenExhausted(blockWhenExhausted);

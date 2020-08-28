@@ -17,11 +17,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import org.springframework.boot.web.embedded.tomcat.ConfigurableTomcatWebServerFactory;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 
 
 import javax.cache.configuration.MutableConfiguration;
@@ -46,6 +53,33 @@ public class SpringbootApplication<CACHE_NAME_XXXX> {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringbootApplication.class, args);
+    }
+
+    /**
+     * 嵌入式Servlet容器的配置  这里面配置端口号
+     * 自定义的customerTomcatServletWebServerFactory  就失效了
+     * @return
+     */
+    @Bean
+    public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerFactoryCustomizer(){
+        return factory -> {
+            factory.setPort(8080);
+            factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND,"/404.html"));
+        };
+    }
+
+    /**
+     * 对tomcat容器进行配置 bean
+     * 命名千万不能写成tomcatServletWebServerFactory
+     * org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration  有一个
+     * @return
+     */
+    @Bean
+    public ConfigurableServletWebServerFactory customerTomcatServletWebServerFactory(){
+        TomcatServletWebServerFactory webServerFactory  = new TomcatServletWebServerFactory ();
+        webServerFactory.setPort(8090);
+        webServerFactory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND,"/404.html"));
+        return webServerFactory;
     }
 
     //@Bean

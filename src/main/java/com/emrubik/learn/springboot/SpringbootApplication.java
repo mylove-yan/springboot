@@ -83,13 +83,15 @@ public class SpringbootApplication<CACHE_NAME_XXXX> {
     }
 
     //@Bean
-//    public JCacheManagerCustomizer jCacheManagerCustomizer(){
-//
-//        return cacheManager -> cacheManager.createCache("userCache1", new MutableConfiguration<>()
-//                .setExpiryPolicyFactory(TouchedExpiryPolicy.factoryOf(new Duration(TimeUnit.MINUTES, 30)))
-//                .setStoreByValue(false)
-//                .setStatisticsEnabled(true));
-//    }
+    public JCacheManagerCustomizer jCacheManagerCustomizer(){
+
+        return cacheManager -> {
+            cacheManager.createCache("userCache1", new MutableConfiguration<>()
+                    .setExpiryPolicyFactory(TouchedExpiryPolicy.factoryOf(new Duration(TimeUnit.MINUTES, 30)))
+                    .setStoreByValue(false)
+                    .setStatisticsEnabled(true));
+        };
+    }
     //https://www.bbsmax.com/A/KE5QKAwkzL/
 
 

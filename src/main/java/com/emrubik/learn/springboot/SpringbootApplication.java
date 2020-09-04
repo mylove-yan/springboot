@@ -27,7 +27,10 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.http.HttpStatus;
 
 
@@ -93,6 +96,13 @@ public class SpringbootApplication<CACHE_NAME_XXXX> {
         };
     }
     //https://www.bbsmax.com/A/KE5QKAwkzL/
+
+
+    public void a(){
+        //RedisCacheManager cacheManager = new RedisCacheManager();
+        //EhCacheCacheManager cacheManager = new EhCacheCacheManager();
+        JCacheCacheManager jCacheCacheManager = new JCacheCacheManager();
+    }
 
 
 }

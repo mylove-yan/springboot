@@ -75,7 +75,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>27.0-jre</version>
+            <version>29.0-jre</version>
         </dependency>
         <!--   mybatis-plus依赖     -->
         <!--    引入mybatis-plus后不需要再引用mybatis,防止mp使用的mybatis版本与引入版本mybatis不一致    -->
